@@ -1,10 +1,11 @@
 package org.example.ex2;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ex2 {
     public static void main(String[] args) {
-        ArrayList<Double> list = new ArrayList<>();
+        List<Double> list = new ArrayList<>();
 
         int rand =  (int) (Math.random() * 100);
 
@@ -22,7 +23,7 @@ public class ex2 {
             System.out.print(list.get(i) + " ");
         }
     }
-    public static void bubbleSort(ArrayList<Double> list) {
+    public static void bubbleSort(List<Double> list) {
         for (int i = 0; i < list.size() - 1; i++) {
             for (int j = 0; j < list.size() - i  - 1; j++) {
                 if (list.get(j) > list.get(j + 1)) {

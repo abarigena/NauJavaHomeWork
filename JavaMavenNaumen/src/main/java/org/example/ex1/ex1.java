@@ -17,8 +17,8 @@ public class ex1 {
 
     }
 
-    public static int findAverage(int[] arr) {
-        int sum = 0;
+    public static double findAverage(int[] arr) {
+        double sum = 0;
         for (int i = 0; i < arr.length; i++) {
             sum += arr[i];
         }

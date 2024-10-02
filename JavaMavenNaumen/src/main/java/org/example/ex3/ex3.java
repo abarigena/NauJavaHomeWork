@@ -1,11 +1,14 @@
 package org.example.ex3;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ex3 {
     public static void main(String[] args) {
 
-        ArrayList<Employee> employees = new ArrayList<>();
+        List<Employee> employees = new ArrayList<>();
 
         employees.add(new Employee("Иванов Иван Иванович", 30, "Отдел продаж", 50000.0));
         employees.add(new Employee("Петров Петр Петрович", 45, "Бухгалтерия", 70000.0));
@@ -19,15 +22,12 @@ public class ex3 {
             System.out.println(employee.getFullName() + " " + employee.getSalary()+ " " + employee.getDepartment()+ " " + employee.getAge());
         }
     }
-    public static void sortedSalary(ArrayList<Employee> employees) {
-        for (int i = 0; i < employees.size() - 1; i++) {
-            for (int j = 0; j < employees.size() - i - 1; j++) {
-                if (employees.get(j).getSalary() > employees.get(j + 1).getSalary()) {
-                    Employee temp = employees.get(j);
-                    employees.set(j, employees.get(j + 1));
-                    employees.set(j + 1, temp);
-                }
-            }
-        }
+    public static void sortedSalary(List<Employee> employees) {
+        List<Employee> sorted = employees.stream()
+                .sorted(Comparator.comparing(Employee::getSalary))
+                .toList();
+
+        employees.clear();
+        employees.addAll(sorted);
     }
 }
