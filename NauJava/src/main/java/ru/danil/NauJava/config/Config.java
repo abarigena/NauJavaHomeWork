@@ -10,22 +10,21 @@ import java.util.Scanner;
 
 
 @Configuration
-public class Config
-{
+public class Config {
     @Autowired
     private CommandProcessor commandProcessor;
 
+
     @Bean
-    public CommandLineRunner commandScanner(){
+    public CommandLineRunner commandScanner() {
         return args -> {
-            try(Scanner scanner = new Scanner(System.in))
-            {
+            try (Scanner scanner = new Scanner(System.in)) {
                 System.out.println("Введите команду. 'exit' для выхода.");
-                while (true){
+                while (true) {
                     System.out.print("> ");
                     String input = scanner.nextLine();
 
-                    if("exit".equalsIgnoreCase(input.trim())){
+                    if ("exit".equalsIgnoreCase(input.trim())) {
                         System.out.println("Выход из программы...");
                         break;
                     }

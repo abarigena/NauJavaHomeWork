@@ -1,18 +1,17 @@
-package ru.danil.NauJava.ent;
+package ru.danil.NauJava.Entities;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-public class Ticket
-{
+public class Ticket {
     private Long id;
 
-    private String filmName;
+    private String filmName; // Обьеденить LocalDateTime, в сервисе вынести в один метод, не создавать новый обьект тикет в update
 
-    private LocalDate date;
-
-    private LocalTime time;
+    private LocalDateTime dateTime;
 
     private String hall;
 
@@ -36,20 +35,12 @@ public class Ticket
         this.id = id;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public LocalTime getTime() {
-        return time;
-    }
-
-    public void setTime(LocalTime time) {
-        this.time = time;
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
     public String getHall() {
@@ -78,11 +69,13 @@ public class Ticket
 
     @Override
     public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String formattedDateTime = dateTime.format(formatter);
+
         return "Ticket{" +
                 "id=" + id +
                 ", filmName='" + filmName + '\'' +
-                ", date=" + date +
-                ", time=" + time.truncatedTo(ChronoUnit.MINUTES) +
+                ", dateTime=" + formattedDateTime +
                 ", hall='" + hall + '\'' +
                 ", seat='" + seat + '\'' +
                 ", isSold=" + isSold +
