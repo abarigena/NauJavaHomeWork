@@ -2,6 +2,10 @@ package ru.danil.NauJava.Entities.Film;
 
 import jakarta.persistence.*;
 
+/**
+ * Сущность фильма, хранящуюся в базе данных
+ */
+
 @Entity
 @Table(name = "films")
 public class Film {
@@ -10,6 +14,9 @@ public class Film {
     @GeneratedValue
     private Long id;
 
+    /**
+     * Название фильма. Должно быть уникальным для предотвращения повторений фильмов
+     */
     @Column(unique = true)
     private String title;
 
@@ -22,12 +29,16 @@ public class Film {
     @Column
     private double priceCoefficent;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    /**
+     * Геттер и сеттер для каждого поля
+     */
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {

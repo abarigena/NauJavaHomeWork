@@ -43,10 +43,12 @@ class TicketTest {
     void testFindByUser(){
         String ticketUserFirstName = UUID.randomUUID().toString();
         String ticketUserLastName = UUID.randomUUID().toString();
+        String ticketUserPhoneNumber = UUID.randomUUID().toString();
 
         User user = new User();
         user.setFirstName(ticketUserFirstName);
         user.setLastName(ticketUserLastName);
+        user.setPhoneNumber(ticketUserPhoneNumber);
 
         userRepository.save(user);
 
@@ -54,12 +56,11 @@ class TicketTest {
         ticket.setUser(user);
         ticketRepository.save(ticket);
 
-        List<Ticket> foundTickets = ticketRepository.findByUser(ticketUserFirstName,ticketUserLastName);
+        List<Ticket> foundTickets = ticketRepository.findByUser(ticketUserPhoneNumber);
 
         Assertions.assertFalse(foundTickets.isEmpty());
 
         Ticket foundTicket = foundTickets.get(0);
-        Assertions.assertEquals(ticketUserFirstName, foundTicket.getUser().getFirstName());
-        Assertions.assertEquals(ticketUserLastName, foundTicket.getUser().getLastName());
+        Assertions.assertEquals(ticketUserPhoneNumber, foundTicket.getUser().getPhoneNumber());
     }
 }

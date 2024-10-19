@@ -37,9 +37,7 @@ public class HallServiceImpl implements HallService {
         try {
 
             List<HallRow> hallRows = hallRowRepository.findHallRowsByHallName(hallName);
-            for (HallRow hallRow : hallRows) {
-                hallRowRepository.delete(hallRow);
-            }
+            hallRowRepository.deleteAll(hallRows);
 
             hallRepository.deleteByName(hallName);
 

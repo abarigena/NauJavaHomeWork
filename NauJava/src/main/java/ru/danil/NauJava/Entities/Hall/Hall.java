@@ -3,6 +3,9 @@ package ru.danil.NauJava.Entities.Hall;
 
 import jakarta.persistence.*;
 
+/**
+ * Сущность заллов в базе данных
+ */
 @Entity
 @Table(name = "halls")
 public class Hall {
@@ -10,18 +13,25 @@ public class Hall {
     @GeneratedValue
     private Long id;
 
+    /**
+     * Название зала. Должно быть уникальным, чтобы избежать дублирования залов в базе данных.
+     */
     @Column(unique = true)
     private String name;
 
     @Column
     private boolean active;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    /**
+     * Геттер и сеттер для каждого поля
+     */
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public boolean isActive() {

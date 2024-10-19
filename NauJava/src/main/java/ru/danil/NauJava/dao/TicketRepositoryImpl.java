@@ -2,7 +2,6 @@ package ru.danil.NauJava.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.danil.NauJava.Entities.Ticket.Ticket;
@@ -49,7 +48,6 @@ public class TicketRepositoryImpl implements TicketRepositoryCustom {
     }
 
     @Override
-    @Transactional
     public Ticket save(Ticket ticket) {
         if(ticket.getId() == null){
             entityManager.persist(ticket);
@@ -60,7 +58,6 @@ public class TicketRepositoryImpl implements TicketRepositoryCustom {
     }
 
     @Override
-    @Transactional
     public void delete(Ticket ticket) {
         ticket = entityManager.merge(ticket);
         entityManager.remove(ticket);

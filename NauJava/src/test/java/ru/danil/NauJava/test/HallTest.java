@@ -34,7 +34,7 @@ class HallTest {
     }
 
     @Test
-    void testDeleteHallInTx(){
+    void testDeleteHallInTx() {
         Hall mainHall = new Hall();
         mainHall.setName(UUID.randomUUID().toString());
         hallRepository.save(mainHall);
@@ -43,7 +43,6 @@ class HallTest {
 
         HallRow mainHallRow1 = createUniqueHallRow(mainHall, existingRows);
         HallRow mainHallRow2 = createUniqueHallRow(mainHall, existingRows);
-
 
         rowRepository.save(mainHallRow1);
         rowRepository.save(mainHallRow2);
@@ -63,6 +62,7 @@ class HallTest {
 
 
     }
+
     private HallRow createUniqueHallRow(Hall hall, Set<Integer> existingRows) {
         HallRow hallRow = new HallRow();
         int rowNum;

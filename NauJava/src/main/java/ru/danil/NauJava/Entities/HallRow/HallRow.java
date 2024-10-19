@@ -3,9 +3,15 @@ package ru.danil.NauJava.Entities.HallRow;
 import jakarta.persistence.*;
 import ru.danil.NauJava.Entities.Hall.Hall;
 
+/**
+ * Сущность рядов в базе данных
+ *
+ * @UniqueConstraint уникальность пары по ряду и залу
+ */
+
 @Entity
 @Table(name = "hallRows", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"row","hall_id"})
+        @UniqueConstraint(columnNames = {"row", "hall_id"})
 })
 public class HallRow {
     @Id
@@ -22,12 +28,16 @@ public class HallRow {
     @JoinColumn(name = "hall_id")
     private Hall hall;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    /**
+     * Геттер и сеттер для каждого поля
+     */
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int getRow() {

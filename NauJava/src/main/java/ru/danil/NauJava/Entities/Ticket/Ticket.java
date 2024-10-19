@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import ru.danil.NauJava.Entities.HallShedule.HallShedule;
 import ru.danil.NauJava.Entities.User.User;
 
-
+/**
+ * Сущность билетов в базе данных
+ */
 @Entity
 @Table(name = "tickets")
 public class Ticket {
@@ -27,6 +29,10 @@ public class Ticket {
 
     @Column
     private int seat;
+
+    /**
+     * Геттер и сеттер для каждого поля
+     */
 
     public void setId(Long id) {
         this.id = id;

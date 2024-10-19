@@ -6,6 +6,9 @@ import ru.danil.NauJava.Entities.Hall.Hall;
 
 import java.time.LocalDate;
 
+/**
+ * Сущность Расписаний залов в базе данных
+ */
 @Entity
 @Table(name = "hallShedules")
 public class HallShedule {
@@ -21,6 +24,10 @@ public class HallShedule {
 
     @ManyToOne
     private Hall hall;
+
+    /**
+     * Геттер и сеттер для каждого поля
+     */
 
     public void setId(Long id) {
         this.id = id;

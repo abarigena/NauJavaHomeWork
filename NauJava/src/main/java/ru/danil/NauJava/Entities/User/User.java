@@ -2,6 +2,9 @@ package ru.danil.NauJava.Entities.User;
 
 import jakarta.persistence.*;
 
+/**
+ * Сущность пользователя в базе данных
+ */
 @Entity
 @Table(name = "users")
 public class User {
@@ -21,6 +24,10 @@ public class User {
 
     @Column
     private String phoneNumber;
+
+    /**
+     * Геттер и сеттер для каждого поля
+     */
 
     public int getAge() {
         return age;
