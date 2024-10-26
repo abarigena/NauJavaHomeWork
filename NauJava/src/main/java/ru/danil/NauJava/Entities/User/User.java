@@ -14,13 +14,19 @@ public class User {
     private Long id;
 
     @Column
-    private String firstName;
-
-    @Column
     private int age;
 
     @Column
+    private String firstName;
+
+    @Column
     private String lastName;
+
+    @Column
+    private String username;
+
+    @Column
+    private String password;
 
     @Column
     private String phoneNumber;

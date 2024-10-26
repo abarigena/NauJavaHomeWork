@@ -13,14 +13,14 @@ public class ExceptionControllerAdvice
     @ExceptionHandler(java.lang.Exception.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Exception exception(java.lang.Exception e){
-        return Exception.create(e);
+    public ExceptionClass exception(java.lang.Exception e){
+        return ExceptionClass.create(e);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Exception exception(ResourceNotFoundException e){
-        return Exception.create(e);
+    public ExceptionClass exception(ResourceNotFoundException e){
+        return ExceptionClass.create(e);
     }
 }

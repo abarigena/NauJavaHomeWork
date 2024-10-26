@@ -1,10 +1,10 @@
 package ru.danil.NauJava.Controller.Exception;
 
-public class Exception
+public class ExceptionClass
 {
     private String message;
 
-    private Exception(String message)
+    private ExceptionClass(String message)
     {
         this.message = message;
     }
@@ -19,13 +19,13 @@ public class Exception
         this.message = message;
     }
 
-    public static Exception create(Throwable e)
+    public static ExceptionClass create(Throwable e)
     {
-        return new Exception(e.getMessage());
+        return new ExceptionClass(e.getMessage());
     }
 
-    public static Exception create(String message)
+    public static ExceptionClass create(String message)
     {
-        return new Exception(message);
+        return new ExceptionClass(message);
     }
 }
