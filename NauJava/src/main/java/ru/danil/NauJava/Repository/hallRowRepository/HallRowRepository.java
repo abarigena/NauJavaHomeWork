@@ -3,6 +3,7 @@ package ru.danil.NauJava.Repository.hallRowRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import ru.danil.NauJava.Entities.Hall.Hall;
 import ru.danil.NauJava.Entities.HallRow.HallRow;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * Репозиторий для управления сущностями {@link HallRow}.
  * Предоставляет методы для выполнения CRUD-операций с объектами фильма в базе данных.
  */
+@RepositoryRestResource
 public interface HallRowRepository extends CrudRepository<HallRow, Long> {
 
     /**

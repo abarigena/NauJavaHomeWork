@@ -2,7 +2,7 @@ package ru.danil.NauJava.Repository.ticketRepository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import ru.danil.NauJava.Entities.HallRow.HallRow;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import ru.danil.NauJava.Entities.Ticket.Ticket;
 
 import java.util.List;
@@ -11,6 +11,7 @@ import java.util.List;
  * Репозиторий для управления сущностями {@link Ticket}.
  * Предоставляет методы для выполнения CRUD-операций с объектами фильма в базе данных.
  */
+@RepositoryRestResource
 public interface TicketRepository extends CrudRepository<Ticket, Long> {
 
     /**
@@ -19,7 +20,7 @@ public interface TicketRepository extends CrudRepository<Ticket, Long> {
      * @param price цена билетов, которые нужно найти
      * @return список билетов с указанной ценой
      */
-    List<Ticket> findByPrice(double price);
+    List<Ticket> findByPrice(Double price);
 
     /**
      * Находит все билеты, принадлежащие пользователю по его номеру телефона.
