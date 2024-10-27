@@ -1,6 +1,10 @@
 package ru.danil.NauJava.Entities.User;
 
 import jakarta.persistence.*;
+import ru.danil.NauJava.Entities.UserRole.UserRole;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Сущность пользователя в базе данных
@@ -31,9 +35,45 @@ public class User {
     @Column
     private String phoneNumber;
 
+    @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column
+    private Set<UserRole> userRole = new HashSet<UserRole>();
+
+    public User() {
+
+    }
+
+    public User(String usernameTest, String passwordTest, UserRole userRole) {
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     /**
      * Геттер и сеттер для каждого поля
      */
+    public Set<UserRole> getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(Set<UserRole> userRole) {
+        this.userRole = userRole;
+    }
 
     public int getAge() {
         return age;
