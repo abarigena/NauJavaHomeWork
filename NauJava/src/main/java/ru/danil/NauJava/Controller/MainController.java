@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import ru.danil.NauJava.Entities.User.User;
 import ru.danil.NauJava.service.userService.UserService;
 
+/**
+ * Контроллер для обработки запросов, связанных с регистрацией пользователей.
+ * Управляет отображением страницы регистрации и обработкой регистрации нового пользователя.
+ */
 @Controller
 public class MainController {
 
@@ -18,11 +22,25 @@ public class MainController {
         this.userService = userService;
     }
 
+    /**
+     * Обрабатывает GET-запрос для отображения страницы регистрации.
+     *
+     * @return имя представления для отображения страницы регистрации
+     */
     @GetMapping("/registration")
     public String getRegistration(){
         return "registration";
     }
 
+    /**
+     * Обрабатывает POST-запрос для регистрации нового пользователя.
+     * Если пользователь успешно зарегистрирован, происходит перенаправление на страницу авторизации.
+     * В случае ошибки (например, если пользователь уже существует), возвращает страницу регистрации с сообщением об ошибке.
+     *
+     * @param user  Объект пользователя, который регистрируется
+     * @param model Модель для передачи данных в представление
+     * @return имя представления или перенаправление в случае успешной регистрации
+     */
     @PostMapping("/registration")
     public String registrerUser(User user, Model model){
         try{
@@ -33,10 +51,5 @@ public class MainController {
             model.addAttribute("message", "User exists");
             return "registration";
         }
-    }
-
-    @GetMapping("/home")
-    public String home(){
-        return "home";
     }
 }
