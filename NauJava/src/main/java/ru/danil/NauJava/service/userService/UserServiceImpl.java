@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.danil.NauJava.Entities.User.User;
-import ru.danil.NauJava.Entities.UserRole.UserRole;
+import ru.danil.NauJava.Entities.User.UserRole;
 import ru.danil.NauJava.Repository.userRepository.UserRepository;
 
 import java.util.*;

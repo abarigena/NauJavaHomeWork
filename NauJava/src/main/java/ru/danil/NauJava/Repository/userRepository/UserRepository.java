@@ -1,8 +1,10 @@
 package ru.danil.NauJava.Repository.userRepository;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import ru.danil.NauJava.Entities.User.User;
+import ru.danil.NauJava.Entities.User.UserRole;
 
 
 /**
@@ -19,4 +21,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
      * @return объект {@link User}, соответствующий указанному имени пользователя
      */
     User findByUsername(String username);
+
+    @Query("select count(u) from User u join u.userRole r where r = :userRole")
+    Long countByUserRoles(UserRole userRole);
 }

@@ -1,7 +1,6 @@
 package ru.danil.NauJava.Entities.User;
 
 import jakarta.persistence.*;
-import ru.danil.NauJava.Entities.UserRole.UserRole;
 
 import java.util.HashSet;
 import java.util.Set;
