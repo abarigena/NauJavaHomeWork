@@ -36,9 +36,8 @@ class ReportTest {
     void testGenerateReport() {
         Long reportId = reportService.createReport();
 
-        CompletableFuture<Void> future = reportService.generateReport(reportId);
+        reportService.generateReport(reportId);
 
-        future.join();
 
         Report generatedReport = reportRepository.findById(reportId).orElseThrow(() -> new RuntimeException("Report not found"));
 

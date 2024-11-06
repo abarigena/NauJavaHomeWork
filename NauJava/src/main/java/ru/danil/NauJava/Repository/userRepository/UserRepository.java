@@ -22,6 +22,12 @@ public interface UserRepository extends CrudRepository<User, Long> {
      */
     User findByUsername(String username);
 
+    /**
+     * Запрос для подсчета количества пользователей по их роли.
+     *
+     * @param userRole роль пользователя, по которой необходимо выполнить подсчет.
+     * @return количество пользователей с заданной ролью.
+     */
     @Query("select count(u) from User u join u.userRole r where r = :userRole")
     Long countByUserRoles(UserRole userRole);
 }

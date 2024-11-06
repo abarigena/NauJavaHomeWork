@@ -1,6 +1,7 @@
 package ru.danil.NauJava.service.reportService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import ru.danil.NauJava.Entities.Report.Report;
 import ru.danil.NauJava.Entities.Report.ReportStatus;
@@ -76,91 +77,70 @@ public class ReportServiceImpl implements ReportService {
      * формируется HTML-отчет с полученными данными.
      *
      * @param reportId идентификатор отчета, который необходимо сгенерировать
-     * @return {@code CompletableFuture<Void>} объект, указывающий на завершение операции
-     * @throws RuntimeException если отчет с указанным идентификатором не найден
      */
     @Override
-    public CompletableFuture<Void> generateReport(Long reportId) {
-        //Запоминаем время начала
-        long startTime = System.currentTimeMillis();
-        final long[] userCountTime = new long[1];
-        final long[] ticketsFetchTime = new long[1];
+    public void generateReport(Long reportId) {
+        CompletableFuture.runAsync(() -> {
+            long startTime = System.currentTimeMillis();
+            final long[] userCountTime = new long[1];
+            final long[] ticketsFetchTime = new long[1];
 
-        try {
-            Report report = reportRepository.findById(reportId)
-                    .orElseThrow(() -> new RuntimeException("Report not found"));
+            try {
+                Report report = reportRepository.findById(reportId)
+                        .orElseThrow(ChangeSetPersister.NotFoundException::new);
 
-            // Создаем поток для вычисления количества пользователей
-            CompletableFuture<Long> userCountFuture = CompletableFuture.supplyAsync(() -> {
-                long startUserCount = System.currentTimeMillis();
-                final long[] userCount = new long[1];
-                Thread thread = new Thread(() -> {
+                // Запускаем асинхронные задачи для получения количества пользователей и списка билетов
+                CompletableFuture<Long> userCountFuture = CompletableFuture.supplyAsync(() -> {
+                    long startUserCount = System.currentTimeMillis();
+                    final long[] userCount = new long[1];
+
                     try {
-                        Thread.sleep(2000); //симуляция длительности
+                        Thread.sleep(2000); // симуляция длительности
                         userCount[0] = userRepository.countByUserRoles(UserRole.USER);
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
+
+                    userCountTime[0] = System.currentTimeMillis() - startUserCount;
+                    return userCount[0];
                 });
 
-                thread.start();
-                try {
-                    thread.join();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-                userCountTime[0] = System.currentTimeMillis() - startUserCount;
-                return userCount[0];
-            });
+                CompletableFuture<List<Ticket>> ticketFuture = CompletableFuture.supplyAsync(() -> {
+                    long startTickets = System.currentTimeMillis();
+                    List<Ticket> ticketsList = null;
 
-            //Создаем поток для получения списка билетов
-            CompletableFuture<List<Ticket>> ticketFuture = CompletableFuture.supplyAsync(() -> {
-                long startTickets = System.currentTimeMillis();
-                final List<Ticket>[] ticketsList = new List[]{null};
-
-                Thread thread = new Thread(() -> {
                     try {
-                        Thread.sleep(1000);
-                        ticketsList[0] = (List<Ticket>) ticketRepository.findAll();
+                        Thread.sleep(1000); // симуляция длительности
+                        ticketsList = (List<Ticket>) ticketRepository.findAll();
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
+
+                    ticketsFetchTime[0] = System.currentTimeMillis() - startTickets;
+                    return ticketsList;
                 });
-                thread.start();
 
-                try {
-                    thread.join();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
+                // Ждем завершения обеих задач
+                Long userCount = userCountFuture.join();
+                List<Ticket> tickets = ticketFuture.join();
 
-                ticketsFetchTime[0] = System.currentTimeMillis() - startTickets;
-                return ticketsList[0];
-            });
+                long elapsedTime = System.currentTimeMillis() - startTime;
 
-            Long userCount = userCountFuture.join();
-            List<Ticket> tickets = ticketFuture.join();
+                String reportContent = generateHtmlReport(userCount, tickets, userCountTime[0], ticketsFetchTime[0], elapsedTime);
 
-            long elapsedTime = System.currentTimeMillis() - startTime;
+                report.setStatus(ReportStatus.COMPLETED);
+                report.setContent(reportContent);
+                reportRepository.save(report);
 
-            String reportContent = generateHtmlReport(userCount, tickets, userCountTime[0], ticketsFetchTime[0], elapsedTime);
+            } catch (Exception e) {
+                Report report = reportRepository.findById(reportId).orElseThrow(() -> new RuntimeException("Report not found"));
+                report.setStatus(ReportStatus.ERROR);
+                reportRepository.save(report);
+            }
 
-            report.setStatus(ReportStatus.COMPLETED);
-            report.setContent(reportContent);
-            reportRepository.save(report);
-
-        } catch (Exception e) {
-            Report report = reportRepository.findById(reportId).orElseThrow(() -> new RuntimeException("Report not found"));
-            report.setStatus(ReportStatus.ERROR);
-            reportRepository.save(report);
-        }
-
-
-        //Считаем сколько времени прошло
-        long endTime = (System.currentTimeMillis() - startTime);
-        System.out.println("Затраченное время: " + endTime);
-
-        return CompletableFuture.completedFuture(null);
+            long endTime = System.currentTimeMillis() - startTime;
+            System.out.println("Затраченное время: " + endTime);
+        });
     }
 
     private String generateHtmlReport(Long userCount, List<Ticket> tickets,

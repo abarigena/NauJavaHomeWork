@@ -44,17 +44,19 @@ public class ReportController {
     @GetMapping("/{reportId}")
     public ResponseEntity<String> getReportContentController(@PathVariable Long reportId) {
         String reportContent = reportService.getReportContent(reportId);
-        if(reportContent == null|| reportContent.isEmpty()) {
-            ReportStatus status =reportService.getReportStatus(reportId);
-            if(status == ReportStatus.CREATED){
-                return ResponseEntity.ok("Отчет еще формируется. Пожалуйста, подождите.");
-            } else if (status == ReportStatus.ERROR) {
-                return ResponseEntity.ok("Произошла ошибка при формировании отчета.");
-            }else {
-                return ResponseEntity.notFound().build();
-            }
+
+        if(reportContent != null && !reportContent.isEmpty()) {
+            return ResponseEntity.ok(reportContent);
         }
 
-        return ResponseEntity.ok(reportContent);
+        ReportStatus reportStatus = reportService.getReportStatus(reportId);
+
+        if(reportStatus == ReportStatus.CREATED) {
+            return ResponseEntity.ok("Отчет еще формируется. Пожалуйста, подождите.");
+        } else if (reportStatus == ReportStatus.ERROR) {
+            return ResponseEntity.ok("Произошла ошибка при формировании отчета.");
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }
